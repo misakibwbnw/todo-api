@@ -19,6 +19,11 @@ app.get('/api/v1/list', (req, res) => {
     res.json(todoList)
 })
 
+app.get('/api/v1/list/:id', (req, res) => {
+    const index = todoList.findIndex((item) => item.id === Number(req.params.id))
+    res.json(todoList[index])
+})
+
 app.post('/api/v1/list', (req, res) => {
     todoItemIds = todoItemIds + 1
     const todoItem = {
@@ -32,11 +37,10 @@ app.post('/api/v1/list', (req, res) => {
 })
 
 app.delete('/api/v1/list/:id', (req, res) => {
-    const index = todoList.findIndex((item) => item.id === req.params.id)
-    console.log(req)
+    const index = todoList.findIndex((item) => item.id === Number(req.params.id))
 
     // 値の更新
-    if (index > 0) {
+    if (index >= 0) {
         const deleted = todoList.splice(index, 1)
     }
 
@@ -44,24 +48,17 @@ app.delete('/api/v1/list/:id', (req, res) => {
 })
 
 app.put('/api/v1/list/:id', (req, res) => {
-    const index = todoList.findIndex((item) => item.id === req.params.id)
+    const index = todoList.findIndex((item) => item.id === Number(req.params.id))
     
-
     // 値の更新
-    if (index > 0) {
+    if (index >= 0) {
         const item = todoList[index]
-        Object.keys(req).forEach((key) => {
-            item[key] = req[key]
+        Object.keys(req.body).forEach((key) => {
+            item[key] = req.body[key]
         })
     }
-    // const todoItem = {
-    //     id: todoItemIds + 1,
-    //     title: req.body.title,
-    //     checked: false
-    // }
-    // todoList.push(todoItem)
 
-    res.json(todoList)
+    res.json(todoList[index])
 })
 
 // ポート8080でサーバを立てる
