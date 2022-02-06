@@ -2,6 +2,9 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+// mysql
+const mysql = require('mysql')
+
 
 // expressアプリを生成する
 const app = express()
@@ -64,6 +67,14 @@ app.put('/api/v1/list/:id', (req, res) => {
 // ポート8080でサーバを立てる
 app.listen(8080, () => console.log('Listening on port 8080'))
 
+
+// sql
+// const client = mysql.createClient({
+//     host: ‘sample.com‘,
+//     user: ‘ユーザー名’,
+//     password: ‘パスワード‘,
+//     database: ‘データベース名‘
+// })
 
 
 
