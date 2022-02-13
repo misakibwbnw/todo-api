@@ -69,15 +69,32 @@ app.listen(8080, () => console.log('Listening on port 8080'))
 
 
 // sql
-// const client = mysql.createClient({
-//     host: ‘sample.com‘,
-//     user: ‘ユーザー名’,
-//     password: ‘パスワード‘,
-//     database: ‘データベース名‘
-// })
+const connection = mysql.createClient({
+    host: 'localhost',
+    user: 'root',
+    password: "misaki1445",
+    database: 'list_app'
+})
 
+connection.connect((err) => {
+    if (err) {
+        console.log('error connecting: ' + err.stack);
+        return;
+    }
+    console.log('success');
+});
 
-
+app.get('/', (req, res) => {
+    connection.query(
+      'SELECT * FROM users',
+      (error, results) => {
+        console.log(results);
+        res.render('hello.ejs');
+      }
+    );
+  });
+  
+  app.listen(8081);
 
 
 

@@ -14,3 +14,5 @@ todoアプリ生成
 https://sbfl.net/blog/2018/08/25/nodejs-express-webapi/
 id生成
 https://qiita.com/kawasima/items/6b0f47a60c9cb5ffb5c4
+nodejsとmysqlの繋ぎ込み
+https://prog-8.com/docs/nodejs-mysql
