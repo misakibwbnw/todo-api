@@ -8,6 +8,7 @@ const mysql = require('mysql')
 
 // expressアプリを生成する
 const app = express()
+
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -66,35 +67,4 @@ app.put('/api/v1/list/:id', (req, res) => {
 
 // ポート8080でサーバを立てる
 app.listen(8080, () => console.log('Listening on port 8080'))
-
-
-// sql
-const connection = mysql.createClient({
-    host: 'localhost',
-    user: 'root',
-    password: "misaki1445",
-    database: 'list_app'
-})
-
-connection.connect((err) => {
-    if (err) {
-        console.log('error connecting: ' + err.stack);
-        return;
-    }
-    console.log('success');
-});
-
-app.get('/', (req, res) => {
-    connection.query(
-      'SELECT * FROM users',
-      (error, results) => {
-        console.log(results);
-        res.render('hello.ejs');
-      }
-    );
-  });
-  
-  app.listen(8081);
-
-
 

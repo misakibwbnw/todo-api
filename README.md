@@ -9,6 +9,18 @@ npm run dev
 ```
 curl -X POST http://localhost:8080/api/v1/list -H "Content-type: application/json" -d '{ "title" : "tanaka" }'
 ```
+
+**db設計**
+id,
+title,
+checked
+
+mysqlの起動
+```
+brew services start mysql
+mysql --user=root --password
+```
+
 ## 参考
 todoアプリ生成
 https://sbfl.net/blog/2018/08/25/nodejs-express-webapi/

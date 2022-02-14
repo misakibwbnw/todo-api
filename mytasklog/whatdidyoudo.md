@@ -7,3 +7,9 @@ https://prog-8.com/docs/nodejs-mysql
 http://web.sevendays-study.com/mysql/
 
 
+<!-- 2/14 -->
+mysqlの起動方法
+https://prog-8.com/docs/mysql-env
+mysqlでdbを作成
+https://prog-8.com/docs/mysql-database-setup
+
