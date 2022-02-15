@@ -4,9 +4,12 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 // mysql
 const mysql = require('mysql')
+// ejs
+const ejs = require('ejs');
 
 // expressアプリを生成する
 const app = express()
+app.engine('ejs', ejs.renderFile);
 
 // sql
 const connection = mysql.createConnection({
