@@ -1,14 +1,12 @@
-// expressモジュールを読み込む
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-// mysql
 const mysql = require('mysql')
 
-
-// expressアプリを生成する
+// express
 const app = express()
 
+// express setting
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -16,11 +14,28 @@ app.use(cors({
     optionsSuccessStatus: 200
 }))
 app.use(bodyParser.json());
+
+// data
 const todoList = []
 let todoItemIds = 0
 
 app.get('/api/v1/list', (req, res) => {
-    res.json(todoList)
+    // mysql setting
+    const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: "misaki1445",
+        database: 'list_app'
+    })
+    connection.connect();
+    connection.query(
+        'SELECT * FROM users',
+        (error, results) => {
+            if (error) throw error
+            res.json(results)
+            connection.end()
+        }
+    );
 })
 
 app.get('/api/v1/list/:id', (req, res) => {
@@ -29,15 +44,26 @@ app.get('/api/v1/list/:id', (req, res) => {
 })
 
 app.post('/api/v1/list', (req, res) => {
-    todoItemIds = todoItemIds + 1
-    const todoItem = {
-        id: todoItemIds,
-        title: req.body.title,
-        checked: false
-    }
-    todoList.push(todoItem)
-
-    res.json(todoItem)
+    // mysql setting
+    const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: "misaki1445",
+        database: 'list_app'
+    })
+    connection.connect();
+    connection.query(
+        'INSERT INTO users set ?',
+        {
+            title: req.body.title,
+            checked: false
+        },
+        (error, results) => {
+            if (error) throw error
+            res.json(results.insertId)
+            connection.end()
+        }
+    );
 })
 
 app.delete('/api/v1/list/:id', (req, res) => {
