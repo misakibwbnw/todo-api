@@ -15,10 +15,19 @@ id,
 title,
 checked
 
+database: list_app
+table: users
+
 mysqlの起動
 ```
 brew services start mysql
 mysql --user=root --password
+```
+
+テーブルを扱う
+```
+USE list_app;
+SELECT * FROM users;
 ```
 
 ## 参考

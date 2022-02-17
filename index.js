@@ -67,14 +67,23 @@ app.post('/api/v1/list', (req, res) => {
 })
 
 app.delete('/api/v1/list/:id', (req, res) => {
-    const index = todoList.findIndex((item) => item.id === Number(req.params.id))
-
-    // 値の更新
-    if (index >= 0) {
-        const deleted = todoList.splice(index, 1)
-    }
-
-    res.sendStatus(200)
+    // mysql setting
+    const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: "misaki1445",
+        database: 'list_app'
+    })
+    connection.connect();
+    connection.query(
+        'DELETE FROM users WHERE id=?',
+            req.params.id,
+        (error, results) => {
+            if (error) throw error
+            res.sendStatus(200)
+            connection.end()
+        }
+    );
 })
 
 app.put('/api/v1/list/:id', (req, res) => {
