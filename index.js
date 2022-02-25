@@ -15,17 +15,20 @@ app.use(cors({
 }))
 app.use(bodyParser.json());
 
-// data
-const todoList = []
-let todoItemIds = 0
-
+// functions
 app.get('/api/v1/list', (req, res) => {
     // mysql setting
     const connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
         password: "misaki1445",
-        database: 'list_app'
+        database: 'list_app',
+        typeCast: function(field, next) {
+            if (field.type === 'TINY' && field.length === 1) {
+              return field.string() === '1';
+            }
+            return next();
+        }
     })
     connection.connect();
     connection.query(
@@ -38,10 +41,10 @@ app.get('/api/v1/list', (req, res) => {
     );
 })
 
-app.get('/api/v1/list/:id', (req, res) => {
-    const index = todoList.findIndex((item) => item.id === Number(req.params.id))
-    res.json(todoList[index])
-})
+// app.get('/api/v1/list/:id', (req, res) => {
+//     const index = todoList.findIndex((item) => item.id === Number(req.params.id))
+//     res.json(todoList[index])
+// })
 
 app.post('/api/v1/list', (req, res) => {
     // mysql setting
@@ -87,17 +90,32 @@ app.delete('/api/v1/list/:id', (req, res) => {
 })
 
 app.put('/api/v1/list/:id', (req, res) => {
-    const index = todoList.findIndex((item) => item.id === Number(req.params.id))
-    
-    // 値の更新
-    if (index >= 0) {
-        const item = todoList[index]
-        Object.keys(req.body).forEach((key) => {
-            item[key] = req.body[key]
-        })
-    }
-
-    res.json(todoList[index])
+     // mysql setting
+     const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: "misaki1445",
+        database: 'list_app',
+        typeCast: function(field, next) {
+            if (field.type === 'TINY' && field.length === 1) {
+              return field.string() === '1';
+            }
+            return next();
+        }
+    })
+    connection.connect();
+    connection.query(
+        'UPDATE users SET checked=? WHERE id=?',
+        [
+            req.body.checked,
+            req.params.id,
+        ],
+        (error, results) => {
+            if (error) throw error
+            res.sendStatus(200)
+            connection.end()
+        }
+    );
 })
 
 // ポート8080でサーバを立てる
