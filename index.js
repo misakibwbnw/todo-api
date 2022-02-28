@@ -41,10 +41,31 @@ app.get('/api/v1/list', (req, res) => {
     );
 })
 
-// app.get('/api/v1/list/:id', (req, res) => {
-//     const index = todoList.findIndex((item) => item.id === Number(req.params.id))
-//     res.json(todoList[index])
-// })
+app.get('/api/v1/list/:id', (req, res) => {
+    // mysql setting
+    const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: "misaki1445",
+        database: 'list_app',
+        typeCast: function(field, next) {
+            if (field.type === 'TINY' && field.length === 1) {
+              return field.string() === '1';
+            }
+            return next();
+        }
+    })
+    connection.connect();
+    connection.query(
+        'SELECT * FROM users WHERE id=?',
+        req.params.id,
+        (error, results) => {
+            if (error) throw error
+            res.json(results)
+            connection.end()
+        }
+    );
+})
 
 app.post('/api/v1/list', (req, res) => {
     // mysql setting
@@ -80,7 +101,7 @@ app.delete('/api/v1/list/:id', (req, res) => {
     connection.connect();
     connection.query(
         'DELETE FROM users WHERE id=?',
-            req.params.id,
+        req.params.id,
         (error, results) => {
             if (error) throw error
             res.sendStatus(200)
